@@ -19,46 +19,7 @@ Docling HybridChunker와 Contextualize를 활용한 다양한 파일 형식을 M
 
 ## 🚀 시작하기
 
-### 방법 1: Docker 사용 (권장)
-
-#### 필수 요구사항
-
-- Docker
-- Docker Compose (선택사항)
-
-#### 빌드 및 실행
-
-```bash
-# 자동 빌드 및 실행 스크립트 사용
-./build-and-run.sh
-
-# 또는 수동으로 빌드
-docker build -t docling-rag-server .
-
-# 컨테이너 실행
-docker run -d --name docling-rag-server -p 10002:10002 docling-rag-server
-
-# 또는 Docker Compose 사용
-docker-compose up -d
-```
-
-#### 컨테이너 관리
-
-```bash
-# 로그 확인
-docker logs -f docling-rag-server
-
-# 컨테이너 중지
-docker stop docling-rag-server
-
-# 컨테이너 재시작
-docker restart docling-rag-server
-
-# 컨테이너 제거
-docker rm -f docling-rag-server
-```
-
-### 방법 2: 로컬 Python 환경
+### 방법 1: 로컬 Python 환경
 
 #### 필수 요구사항
 
