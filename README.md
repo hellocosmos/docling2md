@@ -2,6 +2,8 @@
 
 Docling HybridChunker와 Contextualize를 활용한 다양한 파일 형식을 Markdown으로 변환하는 FastAPI 기반 REST API입니다.
 
+## 중요 - Docling API를 사용하는 n8n chatbot workflow를 추가했습니다. (2026년 1월 5일)
+
 ## 📋 개요
 
 이 API는 Docling 라이브러리를 사용하여 다양한 문서 형식을 Markdown으로 변환하고, HybridChunker를 통해 지능적인 문서 청킹(chunking) 및 컨텍스트 강화 기능을 제공합니다.
