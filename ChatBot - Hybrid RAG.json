@@ -1,0 +1,1288 @@
+{
+  "name": "ChatBot - Hybrid RAG",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": " Hi. Are you curious about Patrol? (こんにちは。パトロールについて気になりますか)\n\n",
+        "options": {
+          "subtitle": "Start a chat. We're here to help you 24/7.",
+          "title": "Hi, I'm Patrol QnA Bot!."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1136,
+        592
+      ],
+      "id": "158f5197-aada-435d-a0bf-405b2c2c4282",
+      "name": "When chat message received",
+      "webhookId": "9fcf4468-d087-4e95-9b04-a1c09e591f8d",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.body }} || {{ $json.query }}",
+        "options": {
+          "systemMessage": "=# 🚨 QA 챗봇 - 상세 & 포괄형 답변 버전\n\n## 언어 규칙 (절대 준수)\n\n- **일본어 질문** (ひらがな, カタカナ, 漢字 포함) → 답변 100% 일본어  \n- **한국어 질문** (한글 포함) → 답변 100% 한국어  \n- **영어 질문** → 답변 100% 영어  \n\n👉 반드시 질문 언어와 답변 언어가 1:1로 일치해야 함.  \n\n## 사용자 질의 변환 및 수정\n- 사용자의 질의를 검색도구의 질의어 맞게 키워드를 추출해서 검색도구에 전달한다.\n- 예를 들어, \"펌웨어 업데이트는 방법에 대해 자세히 알려주세요\"는 \"펌웨어 업데이트\" 질의로 변환해서 검색도구에 전달한다.\n- 사용자의 질의어에 오타가 있는 경우 적절한 단어로 치환해서 키워드를 생성한다. \n- 예를 들어, \"펌에어 엎데이투 방법이 머예여?\"를 \"펌웨어 업데이트\"로 변경한다.\n\n---\n\n## 답변 절차\n\n1. **질문 언어 식별** → 답변 언어 확정  \n2. **질문 유형 분석** → 설치, 설정, 문제해결, 사용법, 기능 문의 등  \n3. **관련 문서/검색 결과 수집** → Hybrid_Search 활용  \n4. **구조적·포괄적 답변 작성** → 유형별 템플릿 + 추가 정보  \n\n---\n\n## 답변 구조 가이드 (질문 유형별)\n\n### 1. 설치 관련\n- **사전 준비**: 환경 요건, 요구 사양, 필수 소프트웨어  \n- **설치 과정**: 단계별 절차, UI/CLI 기준별 상세 안내  \n- **주의사항**: 흔한 오류, 충돌 방지 방법, 후속 확인  \n\n### 2. 설정 / 사용법\n- **위치 안내**: 메뉴/경로/명령어  \n- **단계별 방법**: 순서별 상세 설명  \n- **추가 옵션**: 선택적 설정, 확장 기능, 최적화 팁  \n\n### 3. 문제 해결 (Troubleshooting)\n- **증상 확인**: 사용자가 겪는 현상 명확화  \n- **원인 분석**: 시스템, 네트워크, 사용자 입력 등 가능한 원인  \n- **해결 방법**: 단계별 조치, 대안 방법, 장기적 예방책  \n\n### 4. 기능 문의\n- **기능 설명**: 목적·범위·제한 사항  \n- **사용 방법**: 실제 활용 절차  \n- **관련 기능**: 연계 기능, 확장성, 주의사항  \n\n---\n\n## 답변 작성 형식 (언어별)\n\n### 한국어 (예시)\n[질문 내용]에 대해 상세히 안내드립니다.\n\n## [적절한 제목]\n\n### [섹션1: 주요 개요/위치]\n- **항목**: 구체적 설명\n\n### [섹션2: 단계별 안내]\n1. **단계**: 상세 설명\n2. **단계**: 상세 설명\n\n### [섹션3: 추가 안내/주의사항]\n관련 정보, 자주 발생하는 오류 및 해결 팁\n\n**참고 문서**\n- 문서명: [file_name]\n- 섹션: [section_no] (예: 4., 4-1, 4-2 등의 섹션 번호 또는 시트 이름)\n\n추가 문의사항이 있으면 언제든 말씀해 주세요.\n\n---\n\n### 일본어 (例)\n[質問内容]について詳しくご説明いたします。\n\n## [適切な見出し]\n\n### [セクション1: 概要や位置]\n- **項目**: 具体的な説明\n\n### [セクション2: 手順]\n1. **ステップ**: 詳細な方法\n2. **ステップ**: 詳細な方法\n\n### [セクション3: 注意事項や関連情報]\n関連する情報や注意点\n\n**参考資料**\n- 文書名: [file_name]\n- セクション: [section_no] (例: 4., 4-1, 4-2などのセクション番号またはシート名)\n\nご不明な点がございましたら、いつでもお聞かせください。\n\n---\n\n### 영어 (Example)\nHere's a detailed explanation about [question content].\n\n## [Appropriate Title]\n\n### [Section 1: Overview / Location]\n- **Item**: Specific explanation\n\n### [Section 2: Step-by-step Instructions]\n1. **Step**: Detailed explanation\n2. **Step**: Detailed explanation\n\n### [Section 3: Additional Notes / Related Info]\nPrecautions, tips, related features\n\n**Reference Documents**\n- Document: [file_name]\n- Section: [section_no] (e.g., section numbers like 4., 4-1, 4-2 or sheet names)\n\nPlease feel free to ask if you have further questions.\n\n---\n\n## 출처 표기 규칙 (절대 준수)\n\n⚠️ **섹션 번호 표기 필수 규칙**\n\n1. **PDF 문서**: 반드시 매뉴얼의 페이지 번호가 아닌 **섹션 번호**로 표기\n   - ✅ 올바른 예시: 섹션 4., 섹션 4-1, 섹션 4-2-3\n   - ❌ 잘못된 예시: 12페이지, p.12, page 12\n\n2. **Excel 문서**: **시트 이름**으로 표기\n   - ✅ 올바른 예시: FAQ 시트, 설치가이드 시트\n   - ❌ 잘못된 예시: Sheet1, 첫 번째 시트\n\n3. **출처 형식**:\n```\n   **참고 문서**\n   - 문서명: [파일명]\n   - 섹션: [섹션 번호 또는 시트 이름]\n```\n\n4. **절대 금지**: 페이지 번호(page number) 표기 금지\n   - \"페이지\", \"ページ\", \"page\", \"p.\" 등의 표현 사용 불가\n\n---\n\n## 핵심 원칙\n1. **질문 맞춤형 구조** – 억지로 템플릿에 끼워 맞추지 말고 상황에 따라 적절히 확장  \n2. **언어 일치 100%** – 질문 언어와 답변 언어가 반드시 동일해야 함  \n3. **출처 정보 제공** – 문서명 + **섹션 번호**(PDF) 또는 **시트 이름**(Excel) 반드시 포함  \n4. **포괄적 답변** – 설치·설정·문제 해결·관련 기능까지 최대한 다각도로 설명  \n5. **추가 가치 제공** – 예방 팁, 주의사항, 자주 묻는 문제까지 포함",
+          "enableStreaming": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -736,
+        592
+      ],
+      "id": "512dd9a1-3217-4982-a1f8-a682d0ca111a",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -736,
+        800
+      ],
+      "id": "2c918397-553f-4b9e-9416-ea818061c2a0",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "6IDXoKmhJ6NBPJ8O",
+          "name": "OpenAi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "query"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -336,
+        592
+      ],
+      "id": "292f6e00-353d-4614-9582-b4d14225a33f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "patrol-manual",
+        "responseMode": "streaming",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1136,
+        784
+      ],
+      "id": "66a192f5-4e62-43b7-b608-7e888ba0aca0",
+      "name": "Webhook",
+      "webhookId": "a0be4d4b-f41f-48fa-a551-1949348636c9"
+    },
+    {
+      "parameters": {
+        "description": "=사용자 질의에 대한 사용자 매뉴얼, 기술 문서, FAQ에서 정보를 검색하는 도구입니다. 사용자의 질문과 관련된 문서를 찾아 정확한 답변을 제공할 수 있습니다. 예: 제품 설정, 사용방법, 문제 해결, 기능 설명 등",
+        "workflowId": {
+          "__rl": true,
+          "value": "ozsmpwTCahB8TatG",
+          "mode": "list",
+          "cachedResultUrl": "/workflow/ozsmpwTCahB8TatG",
+          "cachedResultName": "Patrol Manual RAG"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('query', ``, 'string') }}"
+          },
+          "matchingColumns": [
+            "query"
+          ],
+          "schema": [
+            {
+              "id": "query",
+              "displayName": "query",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string"
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        800
+      ],
+      "id": "c877f038-6d6e-44af-8b01-1e37d1ddf1e7",
+      "name": "Hybrid Search"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c5a0185-fa7b-44ae-9ba4-6c88782e83f4",
+              "name": "query",
+              "value": "={{ $json.chatInput }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -960,
+        592
+      ],
+      "id": "cb6e18ed-02bc-43ba-b1ab-d6624ffeae5d",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "openAiApi",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "input",
+              "value": "={{ $json.query }}"
+            },
+            {
+              "name": "model",
+              "value": "text-embedding-3-small"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -176,
+        592
+      ],
+      "id": "e9cbeff3-8fde-46fc-b257-95e228bcb2fd",
+      "name": "Generate Embedding from Query",
+      "credentials": {
+        "openAiApi": {
+          "id": "6IDXoKmhJ6NBPJ8O",
+          "name": "OpenAi"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\n// 검색 결과 배열 추출\nconst results = items.map(item => item.json);\n\nif (results && results.length > 0) {\n  // 문서들을 포맷된 문자열로 변환\n  const formattedDocs = results.map((doc, index) => {\n    const metadata = doc.metadata || {};\n    const fileName = metadata.file_name || '파일명 없음';\n    \n    // 위치 정보 생성\n    let locationInfo = '';\n    \n    // 1순위: 시트 정보 (Excel)\n    if (metadata.sheet_name && metadata.sheet_name !== '[]') {\n      let sheetName = metadata.sheet_name;\n      if (typeof sheetName === 'string' && sheetName.startsWith('[')) {\n        try {\n          const parsed = JSON.parse(sheetName);\n          sheetName = Array.isArray(parsed) && parsed.length > 0 \n            ? parsed.join(', ') \n            : null;\n        } catch (e) {\n          sheetName = null;\n        }\n      }\n      if (sheetName) {\n        locationInfo = ` (시트: ${sheetName})`;\n      }\n    }\n    \n    // 2순위: 페이지 정보 (PDF)\n    if (!locationInfo && metadata.page_no && metadata.page_no !== 'N/A' && metadata.page_no !== '[]') {\n      let pages = metadata.page_no;\n      if (typeof pages === 'string' && pages.startsWith('[')) {\n        try {\n          const parsed = JSON.parse(pages);\n          pages = Array.isArray(parsed) && parsed.length > 0\n            ? parsed.join(', ')\n            : null;\n        } catch (e) {\n          pages = null;\n        }\n      }\n      if (pages) {\n        locationInfo = ` (페이지 ${pages})`;\n      }\n    }\n    \n    // 3순위: 섹션 정보 (DOCX)\n    if (!locationInfo && (metadata.section || metadata.section_index)) {\n      const section = metadata.section || metadata.section_index;\n      locationInfo = ` (섹션 ${section})`;\n    }\n    \n    // 4순위: location_display\n    if (!locationInfo && metadata.location_display) {\n      locationInfo = ` (${metadata.location_display})`;\n    }\n    \n    return `=== 문서 ${index + 1} ===\n파일: ${fileName}${locationInfo}\n내용: ${doc.content}\n`;\n  }).join('\\n');\n  \n  return [{\n    json: {\n      search_method: 'patrol_manual',\n      total_results: results.length,\n      formatted_docs: formattedDocs\n    }\n  }];\n} else {\n  return [{\n    json: {\n      search_method: 'error',\n      total_results: 0,\n      formatted_docs: \"검색된 문서가 없습니다.\"\n    }\n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        592
+      ],
+      "id": "022078d1-6e34-4929-b723-b5df88d052ed",
+      "name": "문서포매팅3"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://fhnffnrdohzdkrluajhq.supabase.co/functions/v1/patrol-manual",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "supabaseApi",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"query_text\": \"{{ $('When Executed by Another Workflow').item.json.query }}\",\n  \"query_embedding\": [{{ $json.data[0].embedding }}],\n  \"match_count\": 10,\n  \"filter\": { \"file_name\": \"patrol-manual.pdf\" }\n}",
+        "options": {
+          "redirect": {
+            "redirect": {}
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -16,
+        592
+      ],
+      "id": "9fdfe7df-fe88-405a-8905-2931067a7f01",
+      "name": "Hybrid Search1",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "cahI2ciuiGrFYKw9",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "## Create Hybrid Rag for Supabase\n\n\\- Refer to : https://supabase.com/docs/guides/ai/hybrid-search\n\n \n\n## DB Table & Function Creation for Supabase\n\n-- 1. Enable the pgevector extension\n\ncreate extension if not exists vector;\n\n \n\n-- 2. Create a table to storee your patrol_manual\n\ncreate table patrol_manual (\n\n id bigint primary key generated always as identity,\n\n content text,\n\n fts tsvector generated always as (to_tsvector('simple',content)) stored,\n\n embedding vector(1536),\n\n metadata jsonb\n\n);\n\n \n\n-- 3. Create an index for the full-text search\n\ncreate index on patrol_manual using gin(fts);\n\n \n\n-- 4. Create an index for the semantic vector search\n\ncreate index on patrol_manual using hnsw (embedding vector_ip_ops)\n\n \n\n-- 5. Create patrol_manual function (DB Function)\n\nDROP FUNCTION IF EXISTS patrol_manual(vector, text, int, jsonb, int, float, float, boolean);\n\n \n\nCREATE OR REPLACE FUNCTION patrol_manual(\n\n query_embedding vector(1536),\n\n query_text text,\n\n match_count int DEFAULT 10,\n\n filter jsonb DEFAULT '{}',\n\n rrf_k int DEFAULT 50,\n\n vector_weight float DEFAULT 0.6,\n\n keyword_weight float DEFAULT 0.4,\n\n use_or_search boolean DEFAULT false\n\n)\n\nRETURNS TABLE (\n\n id bigint,\n\n content text,\n\n metadata jsonb,\n\n vector_score float,\n\n keyword_score float,\n\n normalized_vector_score float,\n\n normalized_keyword_score float,\n\n vector_rank bigint,\n\n keyword_rank bigint,\n\n rrf_score float,\n\n weighted_score float,\n\n final_score float\n\n)\n\nLANGUAGE plpgsql\n\nAS $$\n\nDECLARE\n\n search_query text;\n\nBEGIN\n\n IF use_or_search THEN\n\n  search_query := replace(trim(query_text), ' ', ' | ');\n\n ELSE\n\n  search_query := query_text;\n\n END IF;\n\n \n\n RETURN QUERY\n\n WITH vector_search AS (\n\n  SELECT\n\n   d.id,\n\n   (1 - (d.embedding <=> query_embedding))::float as similarity_score,\n\n   row_number() OVER (ORDER BY d.embedding <=> query_embedding) as rank\n\n  FROM patrol_manual d\n\n  WHERE d.metadata @> filter\n\n  ORDER BY d.embedding <=> query_embedding\n\n  LIMIT GREATEST(match_count * 2, 20)\n\n ),\n\n keyword_search AS (\n\n  SELECT\n\n   d.id, \n\n   ts_rank(d.fts, \n\n​    CASE \n\n​     WHEN use_or_search THEN to_tsquery('simple', search_query)\n\n​     ELSE websearch_to_tsquery('simple', search_query)\n\n​    END\n\n   )::float as keyword_score,\n\n   row_number() OVER (\n\n​    ORDER BY ts_rank(d.fts, \n\n​     CASE \n\n​      WHEN use_or_search THEN to_tsquery('simple', search_query)\n\n​      ELSE websearch_to_tsquery('simple', search_query)\n\n​     END\n\n​    ) DESC\n\n   ) as rank\n\n  FROM patrol_manual d\n\n  WHERE d.metadata @> filter \n\n   AND d.fts @@ (\n\n​    CASE \n\n​     WHEN use_or_search THEN to_tsquery('simple', search_query)\n\n​     ELSE websearch_to_tsquery('simple', search_query)\n\n​    END\n\n   )\n\n  ORDER BY keyword_score DESC\n\n  LIMIT GREATEST(match_count * 2, 20)\n\n ),\n\n combined_results AS (\n\n  SELECT\n\n   COALESCE(vs.id, ks.id) as id,\n\n   COALESCE(vs.similarity_score, 0.0) as raw_vector_score,\n\n   COALESCE(ks.keyword_score, 0.0) as raw_keyword_score,\n\n   vs.rank as vector_rank,\n\n   ks.rank as keyword_rank\n\n  FROM vector_search vs\n\n  FULL OUTER JOIN keyword_search ks ON vs.id = ks.id\n\n ),\n\n normalized_scores AS (\n\n  SELECT \n\n   cr.*,\n\n   CASE \n\n​    WHEN MAX(cr.raw_vector_score) OVER() > 0 \n\n​    THEN cr.raw_vector_score / MAX(cr.raw_vector_score) OVER()\n\n​    ELSE 0.0 \n\n   END as norm_vector_score,\n\n   CASE \n\n​    WHEN MAX(cr.raw_keyword_score) OVER() > 0 \n\n​    THEN cr.raw_keyword_score / MAX(cr.raw_keyword_score) OVER()\n\n​    ELSE 0.0 \n\n   END as norm_keyword_score\n\n  FROM combined_results cr\n\n )\n\n SELECT\n\n  ns.id,\n\n  docs.content,\n\n  docs.metadata,\n\n  ns.raw_vector_score as vector_score,\n\n  ns.raw_keyword_score as keyword_score,\n\n  ns.norm_vector_score as normalized_vector_score,\n\n  ns.norm_keyword_score as normalized_keyword_score,\n\n  ns.vector_rank,\n\n  ns.keyword_rank,\n\n  (\n\n   COALESCE(1.0 / (rrf_k + ns.vector_rank), 0.0) +\n\n   COALESCE(1.0 / (rrf_k + ns.keyword_rank), 0.0)\n\n  )::float as rrf_score,\n\n  (\n\n   vector_weight * ns.norm_vector_score + \n\n   keyword_weight * ns.norm_keyword_score\n\n  )::float as weighted_score,\n\n  (\n\n   0.5 * (\n\n​    COALESCE(1.0 / (rrf_k + ns.vector_rank), 0.0) +\n\n​    COALESCE(1.0 / (rrf_k + ns.keyword_rank), 0.0)\n\n   ) + \n\n   0.5 * (\n\n​    vector_weight * ns.norm_vector_score + \n\n​    keyword_weight * ns.norm_keyword_score\n\n   )\n\n  )::float as final_score\n\n FROM normalized_scores ns\n\n JOIN patrol_manual docs ON docs.id = ns.id\n\n ORDER BY final_score DESC\n\n LIMIT match_count;\n\nEND;\n\n$$;\n\n \n\n \n\n-- 6. Create patrol_manual Edge function (Edge Function)\n\nEdge Function 생성 (fts, embedding 항목 제외)\n\nimport \"jsr:@supabase/functions-js/edge-runtime.d.ts\";\n\nimport { createClient } from 'jsr:@supabase/supabase-js@2';\n\nDeno.serve(async (req) => {\n\n  if (req.method === 'OPTIONS') {\n\n​    return new Response('ok', { headers: {\n\n​      'Access-Control-Allow-Origin': '*',\n\n​      'Access-Control-Allow-Methods': 'POST, OPTIONS',\n\n​      'Access-Control-Allow-Headers': 'Content-Type, Authorization',\n\n​    }});\n\n  }\n\n  try {\n\n​    const authHeader = req.headers.get('Authorization');\n\n​    const supabaseClient = createClient(\n\n​      Deno.env.get('SUPABASE_URL') ?? '',\n\n​      Deno.env.get('SUPABASE_ANON_KEY') ?? '',\n\n​      { global: { headers: authHeader ? { Authorization: authHeader } : {} }}\n\n​    );\n\n​    const body = await req.json();\n\n​    const { query_text, query_embedding, match_count = 10, filter = {}, rrf_k = 50 } = body;\n\n​    // 🔍 상세한 디버깅 로그\n\n​    console.log('=== DETAILED DEBUG ===');\n\n​    console.log('Raw body:', JSON.stringify(body));\n\n​    console.log('query_text:', query_text);\n\n​    console.log('query_embedding length:', query_embedding?.length);\n\n​    console.log('match_count:', match_count);\n\n​    console.log('filter:', JSON.stringify(filter));\n\n​    console.log('rrf_k:', rrf_k);\n\n​    // 필터 조건으로 문서 수 확인\n\n​    const { data: filteredCount, error: filterError } = await supabaseClient\n\n​      .from('documents')\n\n​      .select('*', { count: 'exact' })\n\n​      .contains('metadata', filter);\n\n​      \n\n​    console.log('Documents matching filter:', filteredCount?.length || 0);\n\n​    // 키워드 검색 테스트\n\n​    const { data: keywordTest, error: keywordError } = await supabaseClient\n\n​      .from('documents')\n\n​      .select('id, content')\n\n​      .textSearch('fts', query_text, { type: 'websearch' })\n\n​      .limit(3);\n\n​      \n\n​    console.log('Keyword search results:', keywordTest?.length || 0);\n\n​    if (!query_text || !query_embedding) {\n\n​      throw new Error('Missing required parameters');\n\n​    }\n\n​    // hybrid_search 호출\n\n​    console.log('Calling patrol_manual...');\n\n​    const { data, error } = await supabaseClient.rpc('patrol_manual', {\n\n​      query_embedding,\n\n​      query_text, \n\n​      match_count,\n\n​      filter,\n\n​      rrf_k\n\n​    });\n\n​    if (error) {\n\n​      console.error('Database error:', error);\n\n​      // 에러 세부 정보도 로그\n\n​      console.error('Error details:', JSON.stringify(error));\n\n​      throw error;\n\n​    }\n\n​    console.log('Search completed - results:', data?.length || 0);\n\n​    \n\n​    // 결과 미리보기\n\n​    if (data && data.length > 0) {\n\n​      console.log('First result preview:', {\n\n​        id: data[0].id,\n\n​        final_score: data[0].final_score,\n\n​        vector_score: data[0].vector_score,\n\n​        keyword_score: data[0].keyword_score\n\n​      });\n\n​    }\n\n​    return new Response(JSON.stringify(data || []), {\n\n​      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },\n\n​      status: 200\n\n​    });\n\n  } catch (error) {\n\n​    console.error('Function error:', error);\n\n​    return new Response(JSON.stringify({ error: error.message }), {\n\n​      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },\n\n​      status: 400\n\n​    });\n\n  }\n\n});\n\n ",
+        "height": 576,
+        "width": 624
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        496,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "7e4fcf66-9f2e-48d8-9fa8-963b7293261c",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1eT0YWHLpHuk4ntyujUs46Xs9IZ6vorGQ",
+          "mode": "list",
+          "cachedResultName": "n8n-rag",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1eT0YWHLpHuk4ntyujUs46Xs9IZ6vorGQ"
+        },
+        "event": "fileCreated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        -144
+      ],
+      "id": "7aa9e52e-f89b-429e-9fb2-d48c694fa32d",
+      "name": "Google Drive Trigger (File Created)",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1KFTk6dnbQ3eAjZM",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "triggerOn": "specificFolder",
+        "folderToWatch": {
+          "__rl": true,
+          "value": "1eT0YWHLpHuk4ntyujUs46Xs9IZ6vorGQ",
+          "mode": "list",
+          "cachedResultName": "n8n-rag",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1eT0YWHLpHuk4ntyujUs46Xs9IZ6vorGQ"
+        },
+        "event": "fileUpdated",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDriveTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        32
+      ],
+      "id": "35061231-20e3-4f84-b664-4853e4c202cc",
+      "name": "Google Drive Trigger (File Updated)",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1KFTk6dnbQ3eAjZM",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "insert",
+        "tableName": {
+          "__rl": true,
+          "value": "patrol_manual",
+          "mode": "list",
+          "cachedResultName": "patrol_manual"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.1,
+      "position": [
+        1600,
+        -80
+      ],
+      "id": "580029cd-c3e2-47dc-9377-2fc3907afe43",
+      "name": "Add Document to VectorDB",
+      "credentials": {
+        "supabaseApi": {
+          "id": "cahI2ciuiGrFYKw9",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -208
+      ],
+      "id": "5a32b511-964b-4614-86e4-b1aa21859cdd",
+      "name": "Aggregate4"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d8865f5-2629-4286-af68-06349fdc6b80",
+              "name": "data",
+              "value": "={{$json.data || $json.markdown || $json.content }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1440,
+        -80
+      ],
+      "id": "a949ea72-97ba-473e-a671-03efe74f0acf",
+      "name": "Data for Embedding"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $('Download File2').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        144,
+        -80
+      ],
+      "id": "54c7e844-40a5-4e9a-bcbc-6650b8ff138f",
+      "name": "Download File1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1KFTk6dnbQ3eAjZM",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 10,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1120,
+        -96
+      ],
+      "id": "c021cb98-7fcc-4fca-ad2b-09bc79bc9815",
+      "name": "Loop"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "3d8865f5-2629-4286-af68-06349fdc6b80",
+              "name": "data",
+              "value": "={{$json.data || $json.markdown || $json.content }}",
+              "type": "string"
+            },
+            {
+              "id": "790cf601-42f4-43f4-b754-13c24cc80221",
+              "name": "db_url_identifier",
+              "value": "hlfcmdgcjzccmeixeied",
+              "type": "string"
+            },
+            {
+              "id": "cdc446c1-e9cc-477f-b316-585587d0f5c0",
+              "name": "file_id",
+              "value": "={{ $json.metadata.file_id }}",
+              "type": "string"
+            },
+            {
+              "id": "d7970cfb-47f6-4cf5-a4e9-95c43ad28987",
+              "name": "page_no",
+              "value": "={{ $json.metadata.pages?.length > 0 ? $json.metadata.pages : ($json.metadata.section_index || $json.metadata.chunk_id || 'N/A') }}",
+              "type": "string"
+            },
+            {
+              "id": "d9b7691b-cdd2-4937-a7cb-8c3fb8727211",
+              "name": "sheet_name",
+              "value": "={{ $json.metadata.sheet_name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1280,
+        -80
+      ],
+      "id": "d613dda2-9aff-4b5d-ae1c-42419b2e461d",
+      "name": "Contents with Meta"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "id": "ef2ed2a3-7d40-461b-bed5-01547e4c4df5",
+      "name": "Wait2",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        944,
+        64
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "615c1db1-1d91-4716-85f3-dcf30990399d"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://211.106.134.184:10002/convert-chunked-async",
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "include_metadata",
+              "value": "true"
+            },
+            {
+              "name": "contextualize",
+              "value": "true"
+            },
+            {
+              "name": "max_tokens",
+              "value": "512"
+            },
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a4f2451-4b81-429d-b9fd-d359d62d88be",
+      "name": "Upload_and_Start1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        304,
+        -80
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "id": "d9863122-adef-4a50-903d-8be89cab6040",
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        464,
+        -80
+      ],
+      "typeVersion": 1.1,
+      "webhookId": "1ae15a24-8740-4aea-afc4-5b1672932875"
+    },
+    {
+      "parameters": {
+        "url": "=http://211.106.134.184:10002/job/{{ $('Upload_and_Start1').item.json.job_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "f7518fc1-525f-4c05-beb3-3ba69cc84d3a",
+      "name": "Status_Verification1",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        624,
+        -80
+      ],
+      "typeVersion": 4.2
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-completed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "completed"
+            },
+            {
+              "id": "condition-failed",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "leftValue": "={{ $json.status }}",
+              "rightValue": "failed"
+            }
+          ],
+          "combinator": "or"
+        },
+        "options": {}
+      },
+      "id": "7c4511cf-4b67-42fc-91a4-d07253caa0af",
+      "name": "If",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        784,
+        -80
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "jsCode": "// 완료된 작업 처리 및 청크 변환을 하나의 노드로 통합\nconst items = $input.all();\n\n// 모든 아이템 처리\nconst allResults = [];\n\nfor (const inputItem of items) {\n  const item = inputItem.json;\n  \n  // 1단계: 작업 상태 확인\n  if (item.status === 'failed') {\n    console.error(`❌ 청킹 실패: ${item.filename}`);\n    console.error(`오류: ${item.error}`);\n    continue; // 다음 아이템으로\n  }\n  \n  if (item.status !== 'completed') {\n    console.log(`⚠️ 예상치 못한 상태: ${item.status}`);\n    continue;\n  }\n  \n  // 2단계: 기본 데이터 검증\n  const result = item.result;\n  if (!result.chunks || !Array.isArray(result.chunks)) {\n    console.log(`⚠️ chunks 배열이 없습니다: ${item.filename}`);\n    continue;\n  }\n  \n  const filename = item.filename || 'unknown';\n  const totalChunks = result.total_chunks || result.chunks.length;\n  \n  console.log(`✅ 청킹 완료: ${filename}`);\n  console.log(`총 청크 수: ${totalChunks}`);\n  \n  // 3단계: Google Drive 메타데이터 가져오기 (안전하게)\n  let fileMetadata = {};  // ✅ 수정: 일반 변수명 사용\n  let fileHash = '';\n  \n  try {\n    const downloadNode = $('Download File2');\n    if (downloadNode && downloadNode.first() && downloadNode.first().json) {\n      fileMetadata = downloadNode.first().json;\n    }\n  } catch (e) {\n    console.log(`⚠️ Download File2 노드를 찾을 수 없습니다: ${e.message}`);\n  }\n  \n  try {\n    const cryptoNode = $('Crypto');\n    if (cryptoNode && cryptoNode.first() && cryptoNode.first().json) {\n      fileHash = cryptoNode.first().json.hash || '';\n    }\n  } catch (e) {\n    console.log(`⚠️ Crypto 노드를 찾을 수 없습니다: ${e.message}`);\n  }\n  \n  // 4단계: 청크를 메타데이터와 함께 변환\n  for (const chunk of result.chunks) {\n    // 페이지 번호 추출\n    let pageNumbers = [];\n    try {\n      if (chunk.metadata?.doc_items) {\n        const pageSet = new Set();\n        \n        for (const docItem of chunk.metadata.doc_items) {\n          if (docItem.prov) {\n            for (const prov of docItem.prov) {\n              if (prov.page_no) {\n                pageSet.add(prov.page_no);\n              }\n            }\n          }\n        }\n        \n        pageNumbers = Array.from(pageSet).sort((a, b) => a - b);\n      }\n    } catch (e) {\n      console.log(`⚠️ 청크 ${chunk.chunk_id}에서 페이지 정보 추출 실패: ${e.message}`);\n    }\n    \n    allResults.push({\n      content: chunk.contextualized_text || chunk.text || \"\",\n      \n      metadata: {\n        // Docling 메타데이터\n        filename: item.filename,\n        chunk_id: chunk.chunk_id,\n        pages: pageNumbers,\n        headings: chunk.metadata?.headings || [],\n        \n        // Google Drive 메타데이터 (fileMetadata 변수 사용)\n        url: fileMetadata.webContentLink || '',\n        name: fileMetadata.originalFilename || item.filename,\n        title: (fileMetadata.originalFilename || item.filename)?.split(\".\")[0] || '',\n        source: fileMetadata.id ? `google-drive://${fileMetadata.id}` : '',\n        status: \"processed\",\n        file_id: fileMetadata.id || '',\n        doc_type: \"google_drive\",\n        language: \"ko\",\n        file_name: fileMetadata.name || item.filename,\n        file_hash: fileHash,\n        mime_type: fileMetadata.mimeType || '',\n        parent_id: fileMetadata.parents?.[0] || '',\n        permissions: fileMetadata.permissions || [],\n        source_type: \"google_drive\",\n        content_type: fileMetadata.mimeType || '',\n        created_time: fileMetadata.createdTime || '',\n        processed_at: new Date().toISOString(),\n        version_info: fileMetadata.version || '',\n        modified_time: fileMetadata.modifiedTime || '',\n        access_summary: fileMetadata.permissions || [],\n        page_no: pageNumbers,\n        sheet_name: chunk.sheet_names || []\n      }\n    });\n  }\n}\n\nconsole.log(`✅ 총 ${allResults.length}개 청크 변환 완료 (메타데이터 포함)`);\nreturn allResults.map(item => ({ json: item }));"
+      },
+      "id": "ac186c2d-5c9d-4604-9363-cd558763f17f",
+      "name": "Clean Data",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        944,
+        -96
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "tableId": "patrol_manual",
+        "filterType": "string",
+        "filterString": "=metadata->>file_id=eq.{{ $json.metadata.file_id }}&select=*"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -144,
+        -208
+      ],
+      "id": "0531ce2e-0aa1-44d5-8e3e-aa6ae7cb9000",
+      "name": "Delete Rows",
+      "credentials": {
+        "supabaseApi": {
+          "id": "cahI2ciuiGrFYKw9",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "getAll",
+        "tableId": "patrol_manual",
+        "limit": 1,
+        "filterType": "string",
+        "filterString": "=metadata->>file_name=eq.{{$json.name}}&select=*"
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -464,
+        -48
+      ],
+      "id": "904f2e37-fe4f-406e-9c58-19a5bd274afc",
+      "name": "Get Row Info",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "cahI2ciuiGrFYKw9",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "type": "SHA256",
+        "binaryData": true,
+        "dataPropertyName": "hash"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        -48
+      ],
+      "id": "cdba3510-1229-4be5-b8d8-36b9ed75e4bb",
+      "name": "Crypto"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -800,
+        -48
+      ],
+      "id": "1c86b75a-2bb3-4001-9459-7fbf3630c455",
+      "name": "Download File2",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1KFTk6dnbQ3eAjZM",
+          "name": "n8n Automation"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -944,
+        -64
+      ],
+      "id": "5ad8c5f3-76b0-4416-97f8-391ed29b5221",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $input.all().length === 0 || Object.keys($input.first().json).length === 0 }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "boolean",
+                      "operation": "true",
+                      "singleValue": true
+                    },
+                    "id": "9ede734c-20c5-4a64-a846-66f0b458e1fc"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "344aab68-4a61-4d04-9784-a8b68d333da5",
+                    "leftValue": "={{ $('Crypto').item.json.hash }}",
+                    "rightValue": "={{ $json.metadata.file_hash }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "notEquals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "fe68f518-487e-49c6-8798-f1d3f3a5d044",
+                    "leftValue": "={{ $('Crypto').item.json.hash }}",
+                    "rightValue": "={{ $json.metadata.file_hash }}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -304,
+        -64
+      ],
+      "id": "48f84e96-7775-4d4a-b837-01c2d5bde046",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "content": "# Embeddng with file changes",
+        "height": 80,
+        "width": 528,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1136,
+        -288
+      ],
+      "typeVersion": 1,
+      "id": "93027092-09c0-4127-9ae0-c7fefb62159e",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "# Chatbot for manual",
+        "height": 80,
+        "width": 496,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1136,
+        464
+      ],
+      "typeVersion": 1,
+      "id": "ccc2fa79-1c59-4ee6-9bc6-c1e516ad2d40",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "options": {
+          "metadata": {
+            "metadataValues": [
+              {
+                "name": "url",
+                "value": "={{ $('Loop').item.json.metadata.url }}"
+              },
+              {
+                "name": "file_id",
+                "value": "={{ $('Loop').item.json.metadata.file_id }}"
+              },
+              {
+                "name": "file_name",
+                "value": "={{ $('Loop').item.json.metadata.file_name }}"
+              },
+              {
+                "name": "content_type",
+                "value": "={{ $('Loop').item.json.metadata.mime_type }}"
+              },
+              {
+                "name": "created_time",
+                "value": "={{ $('Loop').item.json.metadata.created_time }}"
+              },
+              {
+                "name": "modified_time",
+                "value": "={{ $('Loop').item.json.metadata.modified_time }}"
+              },
+              {
+                "name": "page_no",
+                "value": "={{ $('Contents with Meta').item.json.page_no }}"
+              },
+              {
+                "name": "sheet_name",
+                "value": "={{ $('Contents with Meta').item.json.sheet_name }}"
+              },
+              {
+                "name": "file_hash",
+                "value": "={{ $('Clean Data').item.json.metadata.file_hash }}"
+              }
+            ]
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.documentDefaultDataLoader",
+      "typeVersion": 1.1,
+      "position": [
+        1744,
+        144
+      ],
+      "id": "76ab78e3-99bd-4301-a76f-70eac8f7efa3",
+      "name": "Data Loader"
+    },
+    {
+      "parameters": {
+        "options": {
+          "dimensions": 1536
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        1600,
+        144
+      ],
+      "id": "fcbcd9ee-dc1f-4ac4-893e-0fdc4ccb053d",
+      "name": "Embeddings",
+      "credentials": {
+        "openAiApi": {
+          "id": "6IDXoKmhJ6NBPJ8O",
+          "name": "OpenAi"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Generate Embedding from Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hybrid Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Embedding from Query": {
+      "main": [
+        [
+          {
+            "node": "Hybrid Search1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Hybrid Search1": {
+      "main": [
+        [
+          {
+            "node": "문서포매팅3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger (File Created)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Drive Trigger (File Updated)": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add Document to VectorDB": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate4": {
+      "main": [
+        [
+          {
+            "node": "Download File1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data for Embedding": {
+      "main": [
+        [
+          {
+            "node": "Add Document to VectorDB",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File1": {
+      "main": [
+        [
+          {
+            "node": "Upload_and_Start1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Contents with Meta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contents with Meta": {
+      "main": [
+        [
+          {
+            "node": "Data for Embedding",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait2": {
+      "main": [
+        [
+          {
+            "node": "Status_Verification1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload_and_Start1": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Status_Verification1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Status_Verification1": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Clean Data",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Clean Data": {
+      "main": [
+        [
+          {
+            "node": "Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Rows": {
+      "main": [
+        [
+          {
+            "node": "Aggregate4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Row Info": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Crypto": {
+      "main": [
+        [
+          {
+            "node": "Get Row Info",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download File2": {
+      "main": [
+        [
+          {
+            "node": "Crypto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download File2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Download File1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Delete Rows",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data Loader": {
+      "ai_document": [
+        [
+          {
+            "node": "Add Document to VectorDB",
+            "type": "ai_document",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Add Document to VectorDB",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "errorWorkflow": "kfsCTTQDXrJ14WBV"
+  },
+  "versionId": "ae138900-5624-4a29-87b4-32865afa44f3",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "c138ab503aec4b006a1cdd63c92875635a7dd83891a7eab86fb3ec1d8aaa370a"
+  },
+  "id": "ozsmpwTCahB8TatG",
+  "tags": []
+}
